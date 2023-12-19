@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 import json
 
-with open("secret.json", "r", encoding="utf-8") as secret:
+with open("..\\secret.json", "r", encoding="utf-8") as secret:
     data_db = json.load(secret)
 
     SQLALCHEMY_DATABASE_URL = (f"postgresql://{data_db['pg_db']['db_name']}:"

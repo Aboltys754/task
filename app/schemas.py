@@ -15,7 +15,7 @@ class Shop(BaseShop):
     shop_employee: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class BaseEmployee(BaseModel):
@@ -33,6 +33,6 @@ class Employee(BaseEmployee):
     shop_employee: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 

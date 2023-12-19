@@ -1,7 +1,30 @@
-.button {
-    color: red;
+*{
+    margin: 0;
+    padding: 0;
 }
 
-.display_none {
-    display: none;
+button {
+    margin: 5px;
+    width: 150px;
+}
+
+.input_shops {
+    margin-left: 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+.number_shop, 
+.address_shop,
+.name_employee,
+.age_employee,
+.post_employee {
+    display: flex;
+    flex-direction: column;
+}
+
+.input_employees {
+    margin-left: 5px;
+    display: flex;
+    flex-direction: row;
 }

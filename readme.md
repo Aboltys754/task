@@ -10,6 +10,9 @@ py -m pip install -r requirements.txt
 Команда для запуска 
 uvicorn app.main:app --reload
 
+начальный адрес
+http://127.0.0.1:8000/index.html
+
 
 Магазин
 1. Создать магазин: Отправить номер магазина и адрес магазина
