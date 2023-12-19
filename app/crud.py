@@ -9,12 +9,18 @@ def createShop(db: Session, shop: schemas.CreateShop):
     db.add(db_shop)
     db.commit()
     db.refresh(db_shop)
+    print(db_shop)
     return db_shop
 
 
 def getShops(db: Session):
     """Получить все  магазины"""
     return db.query(models.Shop).all()
+
+
+def getShop(db: Session, number_shop):
+    """Получить конкретный магазин"""
+    return db.query(models.Shop).filter(models.Shop.number_shop == number_shop).first()
 
 
 def createEmployee(db: Session, employee: schemas.CreateEmployee):

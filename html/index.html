@@ -8,12 +8,11 @@
 </head>
 <body>    
     <div class="shops">
-        <div class="buttonShop">
+        <div class="button_shop">
             <button onclick="add_shop()">Добавить магазин</button>
-            <button>Удалить магазин</button>
-            <button>Изменить магазин</button>
+            <button >Добавить сотрудника</button>
         </div>
-        <div class="input_shops">
+        <div class="input_shops hidden">
             <div class="number_shop">
                 <label for="number_shop">номер магазина</label>
                 <input type="text" id="number_shop" name="number_shop">
@@ -22,18 +21,8 @@
                 <label for="address_shop">адрес магазина</label>
                 <input type="text" id="address_shop" name="address_shop">
             </div>            
-        </div>         
-        <div>
-            <p>Тут будут магазины</p>
-        </div>       
-    </div>
-    <div class="employees">
-        <div class="button_employee">
-            <button >Добавить сотрудника</button>
-            <button>Удалить сотрудника</button>
-            <button>Изменить сотрудника</button>
         </div>
-        <div class="input_employees">            
+        <div class="input_employees hidden" >            
             <div class="name_employee">
                 <label for="name_employee">Имя сотрудника</label>
                 <input type="text" id="name_employee" name="name_employee">
@@ -47,6 +36,35 @@
                 <input type="text" id="post_employee" name="post_employee">
             </div>
         </div>        
+        <div class="table_shops">
+            <div class="head_table_shop">
+                <p>номер магазина</p>
+                <p>адрес магазина</p>
+            </div>
+            <div class="table_shop_and_button">
+                <div class="info_table_shop">
+                    <p>123</p>
+                    <p>Мира 42</p>
+                    <button><img src="./img/edit.svg" alt="изменить" onclick="edit_shop(event)"></button>
+                    <button><img src="./img/delete.svg" alt="удалить" onclick="delet_shop(event)"></button>
+                </div>
+            </div>
+            <div class="table_shop_and_button">
+                <div class="info_table_shop">
+                    <p>123</p>
+                    <p>Мира 42</p>
+                    <button><img src="./img/edit.svg" alt="изменить" onclick="edit_shop(event)"></button>
+                    <button><img src="./img/delete.svg" alt="удалить" onclick="delet_shop(event)"></button>
+                </div>
+            </div>
+        </div>       
+    </div>
+    <div class="employees">
+        <div class="button_employee">            
+            <button>Удалить сотрудника</button>
+            <button>Изменить сотрудника</button>
+        </div>
+               
         <div>
             <p>Тут будут сотрудники</p>
         </div>

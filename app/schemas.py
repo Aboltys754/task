@@ -12,10 +12,13 @@ class CreateShop(BaseShop):
 
 class Shop(BaseShop):
     id_shop: int
-    shop_employee: int
 
     class Config:
         from_attributes = True
+
+
+class Shops(Shop):
+    shops: list[Shop] = []
 
 
 class BaseEmployee(BaseModel):
@@ -30,7 +33,6 @@ class CreateEmployee(BaseEmployee):
 
 class Employee(BaseEmployee):
     id_employee: int
-    shop_employee: int
 
     class Config:
         from_attributes = True

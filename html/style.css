@@ -3,12 +3,12 @@
     padding: 0;
 }
 
-button {
+.button_shop button {
     margin: 5px;
     width: 150px;
 }
 
-.input_shops {
+.input_shops, .input_employees {
     margin-left: 5px;
     display: flex;
     flex-direction: row;
@@ -23,8 +23,47 @@ button {
     flex-direction: column;
 }
 
-.input_employees {
+.table_shops {
+    display: flex;
+    flex-direction: column;
     margin-left: 5px;
+}
+
+.head_table_shop {
     display: flex;
     flex-direction: row;
 }
+
+.head_table_shop p {
+    margin: 0 5px 5px 5px;
+    width: 150px;
+}
+
+.table_shop_and_button {
+    display: flex;
+    flex-direction: row;
+}
+.info_table_shop {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgb(232, 232, 232);
+}
+
+.info_table_shop p:nth-child(1) {
+    margin: 0 5px 0px 5px;
+    min-width: 150px;
+}
+
+.info_table_shop p:nth-child(2) {
+    margin: 0 5px 0px 5px;
+    width: 300px;
+}
+.info_table_shop button {
+    margin: 0 2px 0 2px;
+}
+
+.hidden {
+    display: none !important;
+}
+
