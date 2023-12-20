@@ -3,15 +3,20 @@
     padding: 0;
 }
 
+.error p{
+    background-color: red;
+    display: inline-block;
+}
+
 .button_shop button {
     margin: 5px;
     width: 150px;
 }
 
-.input_shops, .input_employees {
-    margin-left: 5px;
+#input_shops, #input_employees {
+    margin: 0 0 10px 5px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 .number_shop, 
@@ -23,7 +28,18 @@
     flex-direction: column;
 }
 
-.table_shops {
+#number_shop, 
+#address_shop,
+#name_employee,
+#age_employee,
+#post_employee,
+#send_input_shops,
+#send_input_employees {
+    width: 250px;
+    margin-bottom: 5px;
+}
+
+#table_shops {
     display: flex;
     flex-direction: column;
     margin-left: 5px;

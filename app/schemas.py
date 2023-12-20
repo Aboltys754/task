@@ -17,6 +17,13 @@ class Shop(BaseShop):
         from_attributes = True
 
 
+class DeleteShop(BaseModel):
+    id_shop: int
+
+    class Config:
+        from_attributes = True
+
+
 class Shops(Shop):
     shops: list[Shop] = []
 
@@ -36,5 +43,3 @@ class Employee(BaseEmployee):
 
     class Config:
         from_attributes = True
-
-

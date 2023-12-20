@@ -18,7 +18,6 @@ def get_db():
         db.close()
 
 
-
 @app.get("/get_shops/", response_model=list[schemas.Shop])
 def get_shops(db: Session = Depends(get_db)):
     shops = crud.getShops(db)
@@ -31,6 +30,15 @@ def add_shop(shop: schemas.CreateShop, db: Session = Depends(get_db)):
     if db_shop:
         raise HTTPException(status_code=400, detail="There is already such a shop")
     return crud.createShop(db, shop=shop)
+
+
+@app.delete("/delete_shop/", response_model=schemas.Shop)
+def delete_shop(id: schemas.DeleteShop, db: Session = Depends(get_db)):
+    db_shop_id = crud.getShopId(db, id_shop=id)
+    print(db_shop_id)
+    if db_shop_id is None:
+        raise HTTPException(status_code=400, detail="There is no store with this id")
+    return crud.deleteShop(db, id_shop=id)
 
 
 app.mount("/", StaticFiles(directory="html"), name="static")

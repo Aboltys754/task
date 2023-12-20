@@ -13,14 +13,26 @@ def createShop(db: Session, shop: schemas.CreateShop):
     return db_shop
 
 
-def getShops(db: Session):
-    """Получить все  магазины"""
-    return db.query(models.Shop).all()
-
-
 def getShop(db: Session, number_shop):
     """Получить конкретный магазин"""
     return db.query(models.Shop).filter(models.Shop.number_shop == number_shop).first()
+
+
+def getShopId(db: Session, id_shop):
+    return  db.query(models.Shop).filter(models.Shop.id_shop == id_shop).first()
+
+
+def deleteShop(db: Session, id_shop):
+    """Удалить магазин"""
+    db_shop_id = db.query(models.Shop).filter(models.Shop.id_shop == id_shop).first()
+    db.delete(db_shop_id)
+    db.commit()
+    return id_shop
+
+
+def getShops(db: Session):
+    """Получить все  магазины"""
+    return db.query(models.Shop).all()
 
 
 def createEmployee(db: Session, employee: schemas.CreateEmployee):
