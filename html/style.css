@@ -66,15 +66,24 @@
     background-color: rgb(232, 232, 232);
 }
 
-.info_table_shop p:nth-child(1) {
+.info_table_shop p:nth-child(1){
     margin: 0 5px 0px 5px;
     min-width: 150px;
 }
 
-.info_table_shop p:nth-child(2) {
+#update_adress_shop {
+    min-width: 304px;
+}
+
+.info_table_shop p:nth-child(2){
     margin: 0 5px 0px 5px;
     width: 300px;
 }
+
+#update_number_shop {
+    width: 160px;
+}
+
 .info_table_shop button {
     margin: 0 2px 0 2px;
 }

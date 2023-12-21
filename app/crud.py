@@ -9,7 +9,6 @@ def createShop(db: Session, shop: schemas.CreateShop):
     db.add(db_shop)
     db.commit()
     db.refresh(db_shop)
-    print(db_shop)
     return db_shop
 
 
@@ -33,6 +32,12 @@ def deleteShop(db: Session, id_shop):
 def getShops(db: Session):
     """Получить все  магазины"""
     return db.query(models.Shop).all()
+
+
+def updateShop(db: Session, shop: schemas.Shop):
+    """обновляет данные магазина"""
+    db_shop = db.query(models.Shop).filter(models.Shop.id_shop == shop.id_shop).first()
+    print(db_shop)
 
 
 def createEmployee(db: Session, employee: schemas.CreateEmployee):
