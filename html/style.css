@@ -1,7 +1,94 @@
-.button {
-    color: red;
+*{
+    margin: 0;
+    padding: 0;
 }
 
-.display_none {
-    display: none;
+.error p{
+    background-color: red;
+    display: inline-block;
 }
+
+.button_shop button {
+    margin: 5px;
+    width: 150px;
+}
+
+#input_shops, #input_employees {
+    margin: 0 0 10px 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.number_shop, 
+.address_shop,
+.name_employee,
+.age_employee,
+.post_employee {
+    display: flex;
+    flex-direction: column;
+}
+
+#number_shop, 
+#address_shop,
+#name_employee,
+#age_employee,
+#post_employee,
+#send_input_shops,
+#send_input_employees {
+    width: 250px;
+    margin-bottom: 5px;
+}
+
+#table_shops {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+
+.head_table_shop {
+    display: flex;
+    flex-direction: row;
+}
+
+.head_table_shop p {
+    margin: 0 5px 5px 5px;
+    width: 150px;
+}
+
+.table_shop_and_button {
+    display: flex;
+    flex-direction: row;
+}
+.info_table_shop {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgb(232, 232, 232);
+}
+
+.info_table_shop p:nth-child(1){
+    margin: 0 5px 0px 5px;
+    min-width: 150px;
+}
+
+#update_adress_shop {
+    min-width: 304px;
+}
+
+.info_table_shop p:nth-child(2){
+    margin: 0 5px 0px 5px;
+    width: 300px;
+}
+
+#update_number_shop {
+    width: 160px;
+}
+
+.info_table_shop button {
+    margin: 0 2px 0 2px;
+}
+
+.hidden {
+    display: none !important;
+}
+
