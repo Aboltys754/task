@@ -140,7 +140,8 @@ function create_teg_table(shop) {
     const divInfo = document.createElement('div');
     const errorTag = document.createElement('div');
 
-    errorTag.className = "error"
+    errorTag.className = "error";
+    errorTag.id = `shop-${shop.id_shop}`;
     divTable.className = "table_shop_and_button";
     divInfo.className = "info_table_shop";
 
@@ -219,6 +220,7 @@ async function delete_shop(event) {
 
 //Отправляет данные для изменения
 async function patch_shop(event) {
+
     const error = document.getElementsByClassName("error");
     const shop = {
         id_shop: Number(event.target.parentElement.parentElement.id),
@@ -227,7 +229,7 @@ async function patch_shop(event) {
     }
 
     if (confirm('Вы точно хотите изменить данные магазина?') === true) {
-        const respon = await fetch(`http://127.0.0.1:8000/update_shop/`, {
+        const res = await fetch(`http://127.0.0.1:8000/update_shop/`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
@@ -235,33 +237,45 @@ async function patch_shop(event) {
         body: JSON.stringify(shop) 
     });
         console.log(error)
+        for (let i = 0; i < error.length; i++) {
+            console.log(error[i].id.slice(5))
+        }        
 
-    if (respon.ok) {
+        const json = await res.json();
+
+
+    if (res.ok) {
         clear_activ_element();
         await get_shops();
         return
 
     }} 
-    // else if (JSON.stringify(json) === '{"detail":"There is already such a shop"}') {
-    //     error[0].textContent = ""
-    //     error[0].insertAdjacentHTML('beforeend', `<p>Магазин с таким номером уже есть</p>`);
-    //     return
-    // } else if (JSON.stringify(json) === '{"detail":"The store number cannot be zero or empty"}') {
-    //     error[0].textContent = ""
-    //     error[0].insertAdjacentHTML('beforeend', `<p>Поле номер магазина не заполнено или номер указали 0</p>`);        
-    //     return
-    // } else if (JSON.stringify(json) === `{"detail":"The store's address cannot be empty"}`) {
-    //     error[0].textContent = ""
-    //     error[0].insertAdjacentHTML('beforeend', `<p>Поле адрес магазина не заполнено</p>`);
-    //     return
-    // }
+    else if (JSON.stringify(json) === '{"detail":"There is already such a shop"}') {
+        console.log(2)
+        error[2].textContent = ""
+        error[2].insertAdjacentHTML('beforeend', `<p>Магазин с таким номером уже есть</p>`);
+        return
+    } else if (JSON.stringify(json) === '{"detail":"The store number cannot be zero or empty"}') {
+        console.log(123123123)
+        error[2].textContent = ""
+        error[2].insertAdjacentHTML('beforeend', `<p>Поле номер магазина не заполнено или номер указали 0</p>`);        
+        return
+    } else if (JSON.stringify(json) === `{"detail":"The store's address cannot be empty"}`) {
+        console.log(3)
+        error[2].textContent = ""
+        error[2].insertAdjacentHTML('beforeend', `<p>Поле адрес магазина не заполнено</p>`);
+        return
+    } else {
+        console.log(4)
+    }
+    console.log(5)
 }
 
 //открыть форму изменение магазина
 async function click_edit_shop(event) {
     const tag_input = event.target.parentElement.parentElement   
     if (activ_element_update_shop[0] === true) {
-        const last_element = document.getElementById(`update_number_shop-${activ_element_update_shop[1]}`).parentElement
+        const last_element = document.getElementById(`update_number_shop-${activ_element_update_shop[1]}`).parentElement;
 
         delete_tag(last_element)
 
@@ -273,6 +287,8 @@ async function click_edit_shop(event) {
             `<button><img src="./img/delete.svg" alt="удалить" onclick="delete_shop(event)"> </button>`);
     }
     
+    input_shops.className = "hidden";
+    input_employees.className = "hidden";
     activ_element_update_shop[0] = true;
     activ_element_update_shop[1] = event.target.parentElement.parentElement.parentElement.id;
     activ_element_update_shop[2] = tag_input.childNodes[0].textContent;
