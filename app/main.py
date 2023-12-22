@@ -48,6 +48,10 @@ def delete_shop(id_shop: int, db: Session = Depends(get_db)):
 
 @app.patch("/update_shop/", response_model=schemas.Shop)
 def update_shop(shop: schemas.Shop, db: Session = Depends(get_db)):
+    if shop.number_shop == 0:
+        raise HTTPException(status_code=400, detail="The store number cannot be zero or empty")
+    if len(shop.address_shop) < 1:
+        raise HTTPException(status_code=400, detail="The store's address cannot be empty")
     db_shop_id = crud.getShopId(db, id_shop=shop.id_shop)
     if db_shop_id is None:
         raise HTTPException(status_code=400, detail="There is no store with this id")

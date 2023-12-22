@@ -37,7 +37,10 @@ def getShops(db: Session):
 def updateShop(db: Session, shop: schemas.Shop):
     """обновляет данные магазина"""
     db_shop = db.query(models.Shop).filter(models.Shop.id_shop == shop.id_shop).first()
-    print(db_shop)
+    db_shop.number_shop = shop.number_shop
+    db_shop.address_shop = shop.address_shop
+    db.commit()
+    db.refresh(db_shop)
 
 
 def createEmployee(db: Session, employee: schemas.CreateEmployee):

@@ -7,11 +7,18 @@ const address_shop = document.getElementById("address_shop");
 const name_employee = document.getElementById("name_employee");
 const age_employee = document.getElementById("age_employee");
 const post_employee = document.getElementById("post_employee");
-const error = document.getElementsByClassName("error");
 
 
 // флаг, id, значение первого p, значение второго p
 const activ_element_update_shop = [false, null, null, null];
+
+function clear_activ_element() {
+    activ_element_update_shop[0] = false;
+    activ_element_update_shop[1] = null;
+    activ_element_update_shop[2] = null;
+    activ_element_update_shop[3] = null;
+
+}
 
 
 // очищает поля для ввода нового сотрудника и нового магазина
@@ -23,8 +30,19 @@ function clear_field_new_data() {
     post_employee.value = "";
 }
 
+//Вспомогательная функция для удаления первых 4 элементов переданном тэге
+function delete_tag(tag) {
+    tag.childNodes[0].remove()
+    tag.childNodes[0].remove()
+    tag.childNodes[0].remove()
+    tag.childNodes[0].remove()
+}
+
+
+
 //Отправляет запрос на новый магазин
 async function add_shop() {
+    const error = document.getElementsByClassName("error");
     const shop = {
         number_shop: Number(number_shop.value),
         address_shop: address_shop.value
@@ -100,7 +118,6 @@ async function add_shop() {
 
 //Запрашивает информацию о магазинах и отрисовывает ее на странице
 async function get_shops() {
-    
     const res = await fetch(`http://127.0.0.1:8000/get_shops/`)
 
     if (res.ok) {
@@ -121,7 +138,9 @@ async function get_shops() {
 function create_teg_table(shop) {
     const divTable = document.createElement('div');
     const divInfo = document.createElement('div');
+    const errorTag = document.createElement('div');
 
+    errorTag.className = "error"
     divTable.className = "table_shop_and_button";
     divInfo.className = "info_table_shop";
 
@@ -132,13 +151,28 @@ function create_teg_table(shop) {
     divInfo.insertAdjacentHTML('beforeend',
          `<button><img src="./img/delete.svg" alt="удалить" onclick="delete_shop(event)"> </button>`);
 
-    divTable.id = shop.id_shop;
+    divTable.id = shop.id_shop;    
     divTable.append(divInfo);
+    divTable.append(errorTag);
     table_shops.append(divTable);
 }
 
 //Открывает форму нового магазина и закрывает форму нового сотрудника
 function click_change_class_shop() {
+    if (activ_element_update_shop[0] === true) {
+        const last_element = document.getElementById(`update_number_shop-${activ_element_update_shop[1]}`).parentElement;
+
+        delete_tag(last_element);
+
+        last_element.insertAdjacentHTML('beforeend', `<p>${activ_element_update_shop[2]}</p>`);
+        last_element.insertAdjacentHTML('beforeend', `<p>${activ_element_update_shop[3]}</p>`);
+        last_element.insertAdjacentHTML('beforeend',
+            `<button><img src="./img/edit.svg" alt="изменить" onclick="click_edit_shop(event)"> </button>`);
+        last_element.insertAdjacentHTML('beforeend',
+            `<button><img src="./img/delete.svg" alt="удалить" onclick="delete_shop(event)"> </button>`);
+        clear_activ_element()
+    }
+
     if (input_employees.classList.contains("hidden") !== true) {
         input_employees.classList.toggle("hidden");
         clear_field_new_data()
@@ -148,6 +182,20 @@ function click_change_class_shop() {
 
 //открывает форму нового сотрудника и закрывает форму нового магазина
 function click_change_class_employees() {
+    if (activ_element_update_shop[0] === true) {
+        const last_element = document.getElementById(`update_number_shop-${activ_element_update_shop[1]}`).parentElement;
+
+        delete_tag(last_element);
+
+        last_element.insertAdjacentHTML('beforeend', `<p>${activ_element_update_shop[2]}</p>`);
+        last_element.insertAdjacentHTML('beforeend', `<p>${activ_element_update_shop[3]}</p>`);
+        last_element.insertAdjacentHTML('beforeend',
+            `<button><img src="./img/edit.svg" alt="изменить" onclick="click_edit_shop(event)"> </button>`);
+        last_element.insertAdjacentHTML('beforeend',
+            `<button><img src="./img/delete.svg" alt="удалить" onclick="delete_shop(event)"> </button>`);
+        clear_activ_element()
+    }
+
     if (input_shops.classList.contains("hidden") !== true) {
         input_shops.classList.toggle("hidden");
         clear_field_new_data()
@@ -171,9 +219,7 @@ async function delete_shop(event) {
 
 //Отправляет данные для изменения
 async function patch_shop(event) {
-    console.log(event.target.parentElement.parentElement.id);
-    console.log(event.target.parentElement.childNodes[0].value)
-    console.log(event.target.parentElement.childNodes[1].value)
+    const error = document.getElementsByClassName("error");
     const shop = {
         id_shop: Number(event.target.parentElement.parentElement.id),
         number_shop: Number(event.target.parentElement.childNodes[0].value),
@@ -183,12 +229,32 @@ async function patch_shop(event) {
     if (confirm('Вы точно хотите изменить данные магазина?') === true) {
         const respon = await fetch(`http://127.0.0.1:8000/update_shop/`, {
         method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
         body: JSON.stringify(shop) 
     });
+        console.log(error)
 
     if (respon.ok) {
-      await get_shops();
-    }}
+        clear_activ_element();
+        await get_shops();
+        return
+
+    }} 
+    // else if (JSON.stringify(json) === '{"detail":"There is already such a shop"}') {
+    //     error[0].textContent = ""
+    //     error[0].insertAdjacentHTML('beforeend', `<p>Магазин с таким номером уже есть</p>`);
+    //     return
+    // } else if (JSON.stringify(json) === '{"detail":"The store number cannot be zero or empty"}') {
+    //     error[0].textContent = ""
+    //     error[0].insertAdjacentHTML('beforeend', `<p>Поле номер магазина не заполнено или номер указали 0</p>`);        
+    //     return
+    // } else if (JSON.stringify(json) === `{"detail":"The store's address cannot be empty"}`) {
+    //     error[0].textContent = ""
+    //     error[0].insertAdjacentHTML('beforeend', `<p>Поле адрес магазина не заполнено</p>`);
+    //     return
+    // }
 }
 
 //открыть форму изменение магазина
@@ -196,11 +262,8 @@ async function click_edit_shop(event) {
     const tag_input = event.target.parentElement.parentElement   
     if (activ_element_update_shop[0] === true) {
         const last_element = document.getElementById(`update_number_shop-${activ_element_update_shop[1]}`).parentElement
-    
-        last_element.childNodes[0].remove()
-        last_element.childNodes[0].remove()
-        last_element.childNodes[0].remove()
-        last_element.childNodes[0].remove()
+
+        delete_tag(last_element)
 
         last_element.insertAdjacentHTML('beforeend', `<p>${activ_element_update_shop[2]}</p>`);
         last_element.insertAdjacentHTML('beforeend', `<p>${activ_element_update_shop[3]}</p>`);
@@ -214,11 +277,9 @@ async function click_edit_shop(event) {
     activ_element_update_shop[1] = event.target.parentElement.parentElement.parentElement.id;
     activ_element_update_shop[2] = tag_input.childNodes[0].textContent;
     activ_element_update_shop[3] = tag_input.childNodes[1].textContent;
-    
-    tag_input.childNodes[0].remove();
-    tag_input.childNodes[0].remove();
-    tag_input.childNodes[0].remove();
-    tag_input.childNodes[0].remove();
+
+    delete_tag(tag_input)
+
     tag_input.insertAdjacentHTML('afterBegin',
         `<input type="text" id="update_adress_shop" 
         value="${activ_element_update_shop[3]}" name="number_shop">`);
@@ -235,10 +296,8 @@ async function click_edit_shop(event) {
 //Закрыть форму изменения магазина
 function cansell_update_shop(event) {
     const tag_input = event.target.parentElement;
-    tag_input.childNodes[0].remove();
-    tag_input.childNodes[0].remove();
-    tag_input.childNodes[0].remove();
-    tag_input.childNodes[0].remove();
+
+    delete_tag(tag_input)
 
     tag_input.insertAdjacentHTML('beforeend', `<p>${activ_element_update_shop[2]}</p>`);
     tag_input.insertAdjacentHTML('beforeend', `<p>${activ_element_update_shop[3]}</p>`);
@@ -246,11 +305,7 @@ function cansell_update_shop(event) {
          `<button><img src="./img/edit.svg" alt="изменить" onclick="click_edit_shop(event)"> </button>`);
     tag_input.insertAdjacentHTML('beforeend',
          `<button><img src="./img/delete.svg" alt="удалить" onclick="delete_shop(event)"> </button>`);
-
-    activ_element_update_shop[0] = false;
-    activ_element_update_shop[1] = null;
-    activ_element_update_shop[2] = null;
-    activ_element_update_shop[3] = null;
+    clear_activ_element();
 }
 
 get_shops()
