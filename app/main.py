@@ -59,4 +59,15 @@ def update_shop(shop: schemas.Shop, db: Session = Depends(get_db)):
     return shop
 
 
+@app.post("/add_employee/", response_model=schemas.Employee)
+def add_employee(employee: schemas.BaseEmployee, db: Session = Depends(get_db)):
+    if len(employee.name_employee) < 1:
+        raise HTTPException(status_code=400, detail="The name field should not be empty")
+    if len(employee.post_employee) < 1:
+        raise HTTPException(status_code=400, detail="The position field should not be empty")
+    if employee.age_employee < 18:
+        raise HTTPException(status_code=400, detail="The age of the employee must be over 18 years old")
+    return crud.createEmployee(db, employee=employee)
+
+
 app.mount("/", StaticFiles(directory="html"), name="static")
