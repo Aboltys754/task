@@ -1,16 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from os import path, getenv
+from .config import config
 
-import json
+SQLALCHEMY_DATABASE_URL = (f"postgresql://{config['user']}:{config['pass']}@{config['host']}:{int(config['port'])}/shop_info")
 
-with open("app\\secret.json", "r", encoding="utf-8") as secret:
-    data_db = json.load(secret)
-
-    SQLALCHEMY_DATABASE_URL = (f"postgresql://{data_db['pg_db']['db_name']}:"
-                               f"{data_db['pg_db']['db_password']}@"
-                               f"{data_db['pg_db']['host']}/"
-                               f"shop_info")
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

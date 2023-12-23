@@ -1,7 +1,7 @@
 import psycopg2
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-
+from .config import config
 import json
 
 
@@ -10,10 +10,10 @@ def init_db():
         with open("secret.json", "r", encoding="utf-8") as file:
             data_db = json.load(file)
             connection = psycopg2.connect(
-                user=data_db['pg_db']['db_name'],
-                password=data_db['pg_db']['db_password'],
-                host=data_db['pg_db']['host'],
-                port=data_db['pg_db']['port']
+                user=config['user'],
+                password=config['pass'],
+                host=config['host'],
+                port=config['port'],
             )
             connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             cursor = connection.cursor()
@@ -34,10 +34,10 @@ def drop_db():
         with open("secret.json", "r", encoding="utf-8") as file:
             data_db = json.load(file)
             connection = psycopg2.connect(
-                user=data_db['pg_db']['db_name'],
-                password=data_db['pg_db']['db_password'],
-                host=data_db['pg_db']['host'],
-                port=data_db['pg_db']['port']
+                user=config['user'],
+                password=config['pass'],
+                host=config['host'],
+                port=config['port'],
             )
             connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             cursor = connection.cursor()
