@@ -10,6 +10,8 @@ const age_employee = document.getElementById("age_employee");
 const post_employee = document.getElementById("post_employee");
 
 
+const list_lenght_shops_and_employees = [null, null];
+
 // флаг, id, значение первого p, значение второго p
 const activ_element_update_shop = [false, null, null, null];
 
@@ -248,6 +250,10 @@ async function click_edit_employee(event) {
         `<button onclick="cansell_update_employee(event)">Отмена</button>`);
 }
 
+async function click_change_class_shop_employees() {
+    console.log(1)
+}
+
 
 //Закрыть форму изменения магазина
 function cansell_update_shop(event) {
@@ -286,19 +292,27 @@ function cansell_update_employee(event) {
 
 //Запрашивает информацию о магазинах и отрисовывает ее на странице
 async function get_shops() {
-    const res = await fetch(`/get_shops/`)
+    const res = await fetch(`/get_shops/`);
+    const json = await res.json();
 
     if (res.ok) {
-        table_shops.textContent = "";
-        const json = await res.json();
+        table_shops.textContent = "";        
+        
         json.map((shop) => create_teg_table_shop(shop));
         if (json.length !== 0) {
+            list_lenght_shops_and_employees[0] = json.length
             const head_table_shop = document.createElement('div');
             head_table_shop.className = "head_table_shop";
             head_table_shop.insertAdjacentHTML('beforeend', `<p>номер магазина</p>`);
             head_table_shop.insertAdjacentHTML('beforeend', `<p>адрес магазина</p>`);
             table_shops.prepend(head_table_shop);
         }        
+    }
+
+    if (list_lenght_shops_and_employees[0] !== null || list_lenght_shops_and_employees[1] !== null) {
+        const button_shops = shops.getElementsByTagName("button");
+        button_shops[2].classList.toggle('hidden');
+        
     }
 }
 
@@ -409,16 +423,16 @@ async function delete_shop(event) {
 
 //Запрашивает информацию о сотрудниках и отрисовывает ее на странице
 async function get_employees() {
-    const res = await fetch(`http://127.0.0.1:8000/get_employees/`)
+    const res = await fetch(`/get_employees/`)
 
     const json = await res.json();
 
     if (res.ok) {
-        table_employees.textContent = "";        
+        table_employees.textContent = "";              
 
         json.map((employee) => create_teg_table_employee(employee));
         if (json.length !== 0) {
-            
+            list_lenght_shops_and_employees[1] =  json.length            
             const head_table_employee = document.createElement('div');
             head_table_employee.className = "head_table_employee";
             head_table_employee.insertAdjacentHTML('beforeend', `<p>ФИО</p>`);
@@ -483,7 +497,7 @@ async function delete_employee(event) {
     const employee_id = event.target.parentElement.parentElement.parentElement.id
     console.log(employee_id)
     if (confirm('Вы точно хотите удалить магазин?') === true) {
-        const respon = await fetch(`http://127.0.0.1:8000/delete_employee/${employee_id}`, {
+        const respon = await fetch(`/delete_employee/${employee_id}`, {
         method: 'DELETE',
     });
 
@@ -506,7 +520,7 @@ async function patch_employee(event) {
     }
 
     if (confirm('Вы точно хотите изменить данные магазина?') === true) {
-        const res = await fetch(`http://127.0.0.1:8000/update_employee/`, {
+        const res = await fetch(`/update_employee/`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'

@@ -24,10 +24,6 @@ class DeleteShop(BaseModel):
         from_attributes = True
 
 
-class Shops(Shop):
-    shops: list = []
-
-
 class BaseEmployee(BaseModel):
     name_employee: str
     age_employee: int

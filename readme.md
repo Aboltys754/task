@@ -1,17 +1,7 @@
-Библиотеки для работы приложения
-
-fastapi
-psycopg2
-SQLAlchemy
-uvicorn
-
-py -m pip install -r requirements.txt
-
-Команда для запуска 
-uvicorn app.main:app --reload
+docker compose up -d
 
 начальный адрес
-http://127.0.0.1:8000/index.html
+http://localhost/index.html
 
 
 Магазин

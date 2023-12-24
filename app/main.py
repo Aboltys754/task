@@ -18,7 +18,7 @@ def get_db():
         db.close()
 
 
-@app.get("/get_shops/", response_model=list)
+@app.get("/get_shops/", response_model=list[schemas.Shop])
 def get_shops(db: Session = Depends(get_db)):
     shops = crud.getShops(db)
     return shops

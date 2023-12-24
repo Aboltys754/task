@@ -1,14 +1,14 @@
 import psycopg2
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from app.config import config
+# from .config import config
 
 connection = psycopg2.connect(
-    dbname=config['dbname'],
-    user=config['user'],
-    password=config['pass'],
-    host=config['host'],
-    port=config['port'],
+    dbname='postgres',
+    user='postgres',
+    password='postgres',
+    host='localhost',
+    port='5432',
 )
 
 
@@ -43,6 +43,4 @@ def drop_db():
             connection.close()
             print("Соединение с PostgreSQL закрыто")
 
-
 init_db()
-# drop_db()

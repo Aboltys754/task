@@ -1,22 +1,28 @@
 version: '1.0'
 services:
+  db_app:
+      image: "postgres"
+      # volumes:
+      #   - init-db-app:/docker-entrypoint-initdb.d
+      environment:
+        - POSTGRES_PASSWORD=admin
+        - POSTGRES_USER=bridge
+        - POSTGRES_DB=shop_info
   app:
-    image: "alex"
+    image: "aboltys754/task:1.0.0"
     ports:
       - "8000:8000"
     environment:
       - DB_USER=bridge
       - DB_PASS=admin
       - DB_HOST=db_app
+    deploy:
+      resources:
+        limits:
+          memory: 100M
+    restart: on-failure
     # volumes:
     #   - init-db-app:/bridge/libs
-  db_app:
-    image: "postgres"
-    # volumes:
-    #   - init-db-app:/docker-entrypoint-initdb.d
-    environment:
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_USER=bridge
-      - POSTGRES_DB=shop_info
+  
 # volumes:
   # init-db-app:

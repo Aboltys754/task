@@ -11,6 +11,7 @@
         <div class="button_shop">
             <button onclick="click_change_class_shop()">Добавить магазин</button>
             <button onclick="click_change_class_employees()">Добавить сотрудника</button>
+            <button class="hidden" onclick="click_change_class_shop_employees()">Прикрепить сотрудника</button>
         </div>
         <div id="input_shops" class="hidden">
             <div class="number_shop">
@@ -41,13 +42,16 @@
             </div>
             <button id="send_input_employees" onclick="add_employee()">Отправить данные</button>
             <div class="error">
-
             </div>
-        </div>        
+        </div>
+        <div>
+            
+        </div>    
         <div id="table_shops" class="hidden">           
         </div>       
         <div id="table_employees" class="hidden">           
-        </div>       
+        </div>
+        <div id="table_shop_employees" class="hidden"></div>      
     </div>
     <div class="shop_and_employees">
         <div>
