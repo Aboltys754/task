@@ -1,0 +1,165 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.error p{
+    background-color: red;
+    display: inline-block;
+}
+
+.button_shop button {
+    margin: 5px;
+    width: 150px;
+}
+
+#input_shops, #input_employees {
+    margin: 0 0 10px 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.number_shop, 
+.address_shop,
+.name_employee,
+.age_employee,
+.post_employee {
+    display: flex;
+    flex-direction: column;
+}
+
+#number_shop, 
+#address_shop,
+#name_employee,
+#age_employee,
+#post_employee,
+#send_input_shops,
+#send_input_employees {
+    width: 250px;
+    margin-bottom: 5px;
+}
+
+#table_shops {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+
+#table_employees {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+
+.head_table_shop {
+    display: flex;
+    flex-direction: row;
+}
+
+.head_table_shop p {
+    margin: 0 5px 5px 5px;
+    width: 150px;
+}
+
+.head_table_employee {
+    display: flex;
+    flex-direction: row;
+}
+
+.head_table_employee p:nth-child(1) {
+    margin: 0 5px 5px 5px;
+    width: 300px;
+}
+.head_table_employee p:nth-child(2) {
+    margin: 0 5px 5px 5px;
+    width: 100px;
+}
+
+.table_shop_and_button {
+    display: flex;
+    flex-direction: column;
+}
+
+.table_employee_and_button {
+    display: flex;
+    flex-direction: column;
+}
+
+.info_table_shop {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    max-width: 600px;
+    background-color: rgb(232, 232, 232);
+}
+
+.info_table_employee {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    max-width: 780px;
+    background-color: rgb(232, 232, 232);
+}
+
+.info_table_shop p:nth-child(1){
+    margin: 0 5px 0px 5px;
+    min-width: 150px;
+}
+
+.info_table_shop p:nth-child(2){
+    margin: 0 5px 0px 5px;
+    width: 300px;
+}
+
+.info_table_shop input:nth-child(1) {
+    width: 160px;
+}
+
+.info_table_shop input:nth-child(2) {
+    min-width: 304px;
+}
+
+.info_table_shop button {
+    margin: 0 2px 0 2px;
+    height: 33px;
+}
+
+.info_table_employee p:nth-child(1){
+    margin: 0 5px 0px 5px;
+    min-width: 300px;
+}
+
+.info_table_employee p:nth-child(2){
+    margin: 0 5px 0px 5px;
+    width: 100px;
+}
+
+.info_table_employee p:nth-child(3){
+    margin: 0 5px 0px 5px;
+    width: 150px;
+}
+
+.info_table_employee input:nth-child(1) {
+    margin: 0 5px 0px 5px;
+    width: 300px;
+}
+
+.info_table_employee input:nth-child(2) {
+    margin: 0 5px 0px 5px;
+    width: 100px;
+}
+
+.info_table_employee input:nth-child(3) {
+    margin: 0 5px 0px 5px;
+    width: 150px;
+}
+
+.info_table_employee button {
+    margin: 0 2px 0 2px;
+    height: 33px;
+}
+
+.hidden {
+    display: none !important;
+}
+

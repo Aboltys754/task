@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>    
+    <div id="shops">
+        <div class="button_shop">
+            <button onclick="click_change_class_shop()">Добавить магазин</button>
+            <button onclick="click_change_class_employees()">Добавить сотрудника</button>
+        </div>
+        <div id="input_shops" class="hidden">
+            <div class="number_shop">
+                <label for="number_shop">номер магазина</label>
+                <input type="text" id="number_shop" name="number_shop">
+            </div>
+            <div class="address_shop">
+                <label for="address_shop">адрес магазина</label>
+                <input type="text" id="address_shop" name="address_shop">
+            </div>
+            <button id="send_input_shops" onclick="add_shop()">Отправить данные</button>
+            <div class="error">
+
+            </div>    
+        </div>
+        <div id="input_employees" class="hidden">            
+            <div class="name_employee">
+                <label for="name_employee">Имя сотрудника</label>
+                <input type="text" id="name_employee" name="name_employee">
+            </div>
+            <div class="age_employee">
+                <label for="age_employee">Возраст сотрудника</label>
+                <input type="text" id="age_employee" name="age_employee">
+            </div>
+            <div class="post_employee">
+                <label for="post_employee">Должность сотрудника</label>
+                <input type="text" id="post_employee" name="post_employee">
+            </div>
+            <button id="send_input_employees" onclick="add_employee()">Отправить данные</button>
+            <div class="error">
+
+            </div>
+        </div>        
+        <div id="table_shops" class="hidden">           
+        </div>       
+        <div id="table_employees" class="hidden">           
+        </div>       
+    </div>
+    <div class="shop_and_employees">
+        <div>
+            <p>Тут будут сотрудники</p>
+        </div>
+        
+    </div>
+    <script src="./code.js"></script>
+</body>
+</html>
