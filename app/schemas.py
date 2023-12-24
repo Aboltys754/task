@@ -25,7 +25,7 @@ class DeleteShop(BaseModel):
 
 
 class Shops(Shop):
-    shops: list[Shop] = []
+    shops: list = []
 
 
 class BaseEmployee(BaseModel):
