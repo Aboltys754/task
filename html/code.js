@@ -286,7 +286,7 @@ function cansell_update_employee(event) {
 
 //Запрашивает информацию о магазинах и отрисовывает ее на странице
 async function get_shops() {
-    const res = await fetch(`http://127.0.0.1:8000/get_shops/`)
+    const res = await fetch(`/get_shops/`)
 
     if (res.ok) {
         table_shops.textContent = "";
@@ -311,7 +311,7 @@ async function add_shop() {
         address_shop: address_shop.value
     }
 
-    const res = await fetch(`http://127.0.0.1:8000/add_shop/`, {
+    const res = await fetch(`/add_shop/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
@@ -357,7 +357,7 @@ async function patch_shop(event) {
     }
 
     if (confirm('Вы точно хотите изменить данные магазина?') === true) {
-        const res = await fetch(`http://127.0.0.1:8000/update_shop/`, {
+        const res = await fetch(`/update_shop/`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
@@ -397,7 +397,7 @@ async function patch_shop(event) {
 async function delete_shop(event) {
     const shop_id = event.target.parentElement.parentElement.parentElement.id
     if (confirm('Вы точно хотите удалить магазин?') === true) {
-        const respon = await fetch(`http://127.0.0.1:8000/delete_shop/${shop_id}`, {
+        const respon = await fetch(`/delete_shop/${shop_id}`, {
         method: 'DELETE',
     });
 
@@ -440,7 +440,7 @@ async function add_employee() {
         post_employee: post_employee.value
     }
 
-    const res = await fetch(`http://127.0.0.1:8000/add_employee/`, {
+    const res = await fetch(`/add_employee/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
