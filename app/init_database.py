@@ -1,15 +1,16 @@
 import psycopg2
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from .config import config
-import json
+from app.config import config
 
 connection = psycopg2.connect(
-  user=config['user'],
-  password=config['pass'],
-  host=config['host'],
-  port=config['port'],
+    dbname=config['dbname'],
+    user=config['user'],
+    password=config['pass'],
+    host=config['host'],
+    port=config['port'],
 )
+
 
 def init_db():
     try:
@@ -41,3 +42,7 @@ def drop_db():
             cursor.close()
             connection.close()
             print("Соединение с PostgreSQL закрыто")
+
+
+init_db()
+# drop_db()
