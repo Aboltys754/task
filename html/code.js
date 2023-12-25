@@ -3,11 +3,14 @@ const table_shops = document.getElementById("table_shops");
 const table_employees = document.getElementById("table_employees");
 const input_shops = document.getElementById("input_shops");
 const input_employees = document.getElementById("input_employees");
+const input_shops_employee = document.getElementById("input_shop_employees");
 const number_shop = document.getElementById("number_shop");
 const address_shop = document.getElementById("address_shop");
 const name_employee = document.getElementById("name_employee");
 const age_employee = document.getElementById("age_employee");
 const post_employee = document.getElementById("post_employee");
+const selected_shop = document.getElementById("selected_shop");
+const selected_empolyee = document.getElementById("selected_empolyee");
 
 
 const list_lenght_shops_and_employees = [null, null];
@@ -250,8 +253,9 @@ async function click_edit_employee(event) {
         `<button onclick="cansell_update_employee(event)">Отмена</button>`);
 }
 
+//Открыть форму добовления сотрудника в магазин
 async function click_change_class_shop_employees() {
-    console.log(1)
+    input_shops_employee.classList.toggle("hidden");
 }
 
 
