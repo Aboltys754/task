@@ -56,3 +56,11 @@ class CreateShopEmployees(BaseShopEmployees):
     class Config:
         from_attributes = True
 
+class Foo(BaseModel):
+    id_shop_employee: int
+    number_shop: int
+    address_shop: str
+    name_employee: str
+    age_employee: int
+    post_employee: str
+

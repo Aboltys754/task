@@ -101,4 +101,7 @@ def getShopsEmployeeId(db: Session, shopsEmployee: schemas.BaseShopEmployees):
 
 def getShopsEmployees(db: Session):
     """Получение всех магазинов и сотрудников"""
-    return db.query(models.ShopEmployee).all()
+    # foo = db.query(models.ShopEmployee).join(models.ShopEmployee.id_shop).join(models.ShopEmployee.id_employee)
+    return db.query(models.ShopEmployee).join(models.Shop).join(models.Employee).all()
+    # print(foo)
+    # return foo
