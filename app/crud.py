@@ -62,8 +62,7 @@ def getEmployees(db: Session):
 
 def getEmployeeId(db: Session, employee_id):
     """Поиск по id сотрудника"""
-    foo = db.query(models.Employee).filter(models.Employee.id_employee == employee_id).first()
-    return foo
+    return db.query(models.Employee).filter(models.Employee.id_employee == employee_id).first()
 
 
 def deleteEmployee(db: Session, employee_id):
@@ -82,3 +81,24 @@ def updateEmployee(db: Session, employee: schemas.Employee):
     db_employee.post_employee = employee.post_employee
     db.commit()
     db.refresh(db_employee)
+
+
+def createShopEmployees(db: Session, shopEmployees: schemas.CreateShopEmployees):
+    """Создание связи магазина и персонала"""
+    db_shopEmployees = models.ShopEmployee(id_shop=shopEmployees.id_shop,
+                                           id_employee=shopEmployees.id_employee)
+    db.add(db_shopEmployees)
+    db.commit()
+    db.refresh(db_shopEmployees)
+    return db_shopEmployees
+
+
+def getShopsEmployeeId(db: Session, shopsEmployee: schemas.BaseShopEmployees):
+    """Проверка связи магазина и персонала по id"""
+    return db.query(models.Employee).filter(models.ShopEmployee.id_shop == shopsEmployee.id_shop and
+                                            models.ShopEmployee.id_employee == shopsEmployee.id_employee).first()
+
+
+def getShopsEmployees(db: Session):
+    """Получение всех магазинов и сотрудников"""
+    return db.query(models.ShopEmployee).all()

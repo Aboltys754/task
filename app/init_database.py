@@ -43,4 +43,5 @@ def drop_db():
             connection.close()
             print("Соединение с PostgreSQL закрыто")
 
-init_db()
+# init_db()
+# drop_db()

@@ -1,6 +1,7 @@
 const shops = document.getElementById("shops");
 const table_shops = document.getElementById("table_shops");
 const table_employees = document.getElementById("table_employees");
+const table_shop_employees = document.getElementById("table_shop_employees");
 const input_shops = document.getElementById("input_shops");
 const input_employees = document.getElementById("input_employees");
 const input_shops_employee = document.getElementById("input_shop_employees");
@@ -61,11 +62,6 @@ function delete_tag_employee(tag) {
     tag.childNodes[0].remove()
 }
 
-function add_employee_in_shop() {
-    console.log(111)
-}
-
-
 //Создание одной строчки таблицы магазины
 function create_teg_table_shop(shop) {
     const divTable = document.createElement('div');
@@ -82,12 +78,7 @@ function create_teg_table_shop(shop) {
     divInfo.insertAdjacentHTML('beforeend',
          `<button><img src="./img/edit.svg" alt="изменить" onclick="click_edit_shop(event)"> </button>`);
     divInfo.insertAdjacentHTML('beforeend',
-         `<button><img src="./img/delete.svg" alt="удалить" onclick="delete_shop(event)"> </button>`);
-    // if (get_employees_lenght !== 0) {
-    //     divInfo.insertAdjacentHTML('beforeend',
-    //      `<button><img src="./img/add-user.svg" alt="Добавить сотрудника" onclick="add_employee_in_shop()"> </button>`);
-    // }
-    
+         `<button><img src="./img/delete.svg" alt="удалить" onclick="delete_shop(event)"> </button>`);    
 
     divTable.id = shop.id_shop;    
     divTable.append(divInfo);
@@ -144,6 +135,15 @@ function click_change_class_shop() {
     if (table_employees.classList.contains("hidden") !== true) {
         table_employees.classList.toggle("hidden");
     }
+
+    if (input_shops_employee.classList.contains("hidden") !== true) {
+        input_shops_employee.classList.toggle("hidden");
+    }
+
+    if (table_shop_employees.classList.contains("hidden") !== true) {
+        table_shop_employees.classList.toggle("hidden");
+    }
+
     input_shops.classList.toggle("hidden");
     table_shops.classList.toggle("hidden");
 }
@@ -173,10 +173,67 @@ function click_change_class_employees() {
     if (table_shops.classList.contains("hidden") !== true) {
         table_shops.classList.toggle("hidden");
     }
+
+    if (input_shops_employee.classList.contains("hidden") !== true) {
+        input_shops_employee.classList.toggle("hidden");
+    }
+    
+    if (table_shop_employees.classList.contains("hidden") !== true) {
+        table_shop_employees.classList.toggle("hidden");
+    }
+
     input_employees.classList.toggle("hidden");
     table_employees.classList.toggle("hidden");
 }  
 
+//Открыть форму добовления сотрудника в магазин
+async function click_change_class_shop_employees() {
+    if (input_shops_employee.classList.contains("hidden") === true) {
+        const res_shop = await fetch(`/get_shops/`);
+        const json_shop = await res_shop.json();
+        if (res_shop.ok) {
+            selected_shop.textContent = "";
+            selected_shop.insertAdjacentHTML('beforeend', `<option value="Выбрать магазин" selected="0">Выбрать магазин</option>`)
+            json_shop.map((shop) => {
+                selected_shop.insertAdjacentHTML('beforeend', `<option value="${shop.id_shop}">${shop.number_shop}: ${shop.address_shop}</option>`)
+            })}
+
+        const res_employee = await fetch(`/get_employees/`);
+        const json_employee = await res_employee.json();
+    
+        if (res_employee.ok) {
+            selected_empolyee.textContent ="";
+            selected_empolyee.insertAdjacentHTML('beforeend', `<option value="Выбрать персонал" selected="0">Выбрать персонал</option>`)
+            json_employee.map((employee) => {
+                selected_empolyee.insertAdjacentHTML('beforeend', `<option value="${employee.id_employee}">${employee.post_employee}: ${employee.name_employee}</option>`)
+            })}    
+    }    
+
+    if (input_shops.classList.contains("hidden") !== true) {
+        input_shops.classList.toggle("hidden");
+        clear_field_new_data()
+    }
+
+    if (table_shops.classList.contains("hidden") !== true) {
+        table_shops.classList.toggle("hidden");
+    }
+
+    if (input_employees.classList.contains("hidden") !== true) {
+        input_employees.classList.toggle("hidden");
+        clear_field_new_data()
+    }
+    if (table_employees.classList.contains("hidden") !== true) {
+        table_employees.classList.toggle("hidden");
+    }
+
+    if (list_lenght_shops_and_employees[0] !== null && list_lenght_shops_and_employees[1] !== null) {
+        input_shops_employee.classList.toggle("hidden");
+        table_shop_employees.classList.toggle("hidden");
+    }
+
+    get_employee_in_shop();
+    
+}
 
 //открыть форму изменение магазина
 async function click_edit_shop(event) {
@@ -253,12 +310,6 @@ async function click_edit_employee(event) {
         `<button onclick="cansell_update_employee(event)">Отмена</button>`);
 }
 
-//Открыть форму добовления сотрудника в магазин
-async function click_change_class_shop_employees() {
-    input_shops_employee.classList.toggle("hidden");
-}
-
-
 //Закрыть форму изменения магазина
 function cansell_update_shop(event) {
     const tag_input = event.target.parentElement;
@@ -311,13 +362,43 @@ async function get_shops() {
             head_table_shop.insertAdjacentHTML('beforeend', `<p>адрес магазина</p>`);
             table_shops.prepend(head_table_shop);
         }        
-    }
+    }    
+}
 
-    if (list_lenght_shops_and_employees[0] !== null || list_lenght_shops_and_employees[1] !== null) {
-        const button_shops = shops.getElementsByTagName("button");
-        button_shops[2].classList.toggle('hidden');
-        
+//Запрашивает информацию о сотрудниках и отрисовывает ее на странице
+async function get_employees() {
+    const res = await fetch(`/get_employees/`)
+
+    const json = await res.json();
+
+    if (res.ok) {
+        table_employees.textContent = "";              
+
+        json.map((employee) => create_teg_table_employee(employee));
+        if (json.length !== 0) {
+            list_lenght_shops_and_employees[1] =  json.length            
+            const head_table_employee = document.createElement('div');
+            head_table_employee.className = "head_table_employee";
+            head_table_employee.insertAdjacentHTML('beforeend', `<p>ФИО</p>`);
+            head_table_employee.insertAdjacentHTML('beforeend', `<p>Возраст</p>`);
+            head_table_employee.insertAdjacentHTML('beforeend', `<p>Должность</p>`);
+            table_employees.prepend(head_table_employee);
+        }        
     }
+}
+
+
+//Запрашивает информацию о связях магазинов и персонала
+async function get_employee_in_shop() {
+    const res = await fetch(`/get_shops_employees/`)
+
+    const json = await res.json();
+
+    console.log(JSON.stringify(json));
+
+    // if (res.ok) {
+    //     console.log(JSON.stringify(json));
+    // }
 }
 
 
@@ -361,6 +442,77 @@ async function add_shop() {
     }
 }
 
+// Отправляет запрос на нового сотрудника
+async function add_employee() {
+    const error = document.getElementsByClassName("error");
+
+    const empoyee = {
+        name_employee: name_employee.value,
+        age_employee: Number(age_employee.value),
+        post_employee: post_employee.value
+    }
+
+    const res = await fetch(`/add_employee/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+        body: JSON.stringify(empoyee)
+    })
+
+    const json = await res.json();
+
+    if (res.ok) {
+        error[1].textContent = ""
+        input_employees.classList.toggle("hidden");
+        table_employees.classList.toggle("hidden");
+
+        clear_field_new_data();
+        get_employees();
+        
+        return
+    } else if (JSON.stringify(json) === '{"detail":"The name field should not be empty"}') {
+        error[1].textContent = ""
+        error[1].insertAdjacentHTML('beforeend', `<p>Поле имя сотрудника не должно быть пустым</p>`);
+        return
+    } else if (JSON.stringify(json) === '{"detail":"The position field should not be empty"}') {
+        error[1].textContent = ""
+        error[1].insertAdjacentHTML('beforeend', `<p>Поле должность не должно быть пустым</p>`);
+        return
+    } else if (JSON.stringify(json) === '{"detail":"The age of the employee must be over 18 years old"}') {
+        error[1].textContent = ""
+        error[1].insertAdjacentHTML('beforeend', `<p>Возраст должен быть более 17 лет</p>`);
+        return
+    }
+}
+
+async function add_employee_in_shop() {
+    if (selected_shop.value === "Выбрать магазин") {
+        console.log("Выберите магазин")
+        return
+    }
+
+    if (selected_empolyee.value === "Выбрать персонал") {
+        console.log("Выберите персонал")
+        return
+    }
+    
+    const employee_in_shop = {
+        id_shop: selected_shop.value,
+        id_employee: selected_empolyee.value
+    }
+    const res = await fetch(`/add_employee_in_shop/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+        body: JSON.stringify(employee_in_shop)
+    })
+
+    const json = await res.json();
+
+    console.log(JSON.stringify(json));
+}
 
 //Отправляет данные для изменения магазина
 async function patch_shop(event) {
@@ -409,106 +561,6 @@ async function patch_shop(event) {
         return
     }
 }}
-
-
-//Удаляет выбранный магазин
-async function delete_shop(event) {
-    const shop_id = event.target.parentElement.parentElement.parentElement.id
-    if (confirm('Вы точно хотите удалить магазин?') === true) {
-        const respon = await fetch(`/delete_shop/${shop_id}`, {
-        method: 'DELETE',
-    });
-
-    if (respon.ok) {
-      await get_shops();
-    }}
-}
-
-
-//Запрашивает информацию о сотрудниках и отрисовывает ее на странице
-async function get_employees() {
-    const res = await fetch(`/get_employees/`)
-
-    const json = await res.json();
-
-    if (res.ok) {
-        table_employees.textContent = "";              
-
-        json.map((employee) => create_teg_table_employee(employee));
-        if (json.length !== 0) {
-            list_lenght_shops_and_employees[1] =  json.length            
-            const head_table_employee = document.createElement('div');
-            head_table_employee.className = "head_table_employee";
-            head_table_employee.insertAdjacentHTML('beforeend', `<p>ФИО</p>`);
-            head_table_employee.insertAdjacentHTML('beforeend', `<p>Возраст</p>`);
-            head_table_employee.insertAdjacentHTML('beforeend', `<p>Должность</p>`);
-            table_employees.prepend(head_table_employee);
-        }        
-    }
-}
-
-
-// Отправляет запрос на нового сотрудника
-async function add_employee() {
-    const error = document.getElementsByClassName("error");
-
-    const empoyee = {
-        name_employee: name_employee.value,
-        age_employee: Number(age_employee.value),
-        post_employee: post_employee.value
-    }
-
-    const res = await fetch(`/add_employee/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-          },
-        body: JSON.stringify(empoyee)
-    })
-
-    const json = await res.json();
-    console.log(error[1])
-
-    if (res.ok) {
-        error[1].textContent = ""
-        input_employees.classList.toggle("hidden");
-        table_employees.classList.toggle("hidden");
-
-        clear_field_new_data();
-        get_employees();
-        
-        return
-    } else if (JSON.stringify(json) === '{"detail":"The name field should not be empty"}') {
-        error[1].textContent = ""
-        error[1].insertAdjacentHTML('beforeend', `<p>Поле имя сотрудника не должно быть пустым</p>`);
-        return
-    } else if (JSON.stringify(json) === '{"detail":"The position field should not be empty"}') {
-        error[1].textContent = ""
-        error[1].insertAdjacentHTML('beforeend', `<p>Поле должность не должно быть пустым</p>`);
-        return
-    } else if (JSON.stringify(json) === '{"detail":"The age of the employee must be over 18 years old"}') {
-        error[1].textContent = ""
-        error[1].insertAdjacentHTML('beforeend', `<p>Возраст должен быть более 17 лет</p>`);
-        return
-    }
-    else {
-        console.log(JSON.stringify(json));
-    }
-}
-
-//Удаляет выбранного сотрудника
-async function delete_employee(event) {
-    const employee_id = event.target.parentElement.parentElement.parentElement.id
-    console.log(employee_id)
-    if (confirm('Вы точно хотите удалить магазин?') === true) {
-        const respon = await fetch(`/delete_employee/${employee_id}`, {
-        method: 'DELETE',
-    });
-
-    if (respon.ok) {
-      await get_employees();
-    }}
-}
 
 //Изменяет данные сотрудника
 async function patch_employee(event) {
@@ -559,6 +611,32 @@ async function patch_employee(event) {
     }
 }}
 
+//Удаляет выбранный магазин
+async function delete_shop(event) {
+    const shop_id = event.target.parentElement.parentElement.parentElement.id
+    if (confirm('Вы точно хотите удалить магазин?') === true) {
+        const respon = await fetch(`/delete_shop/${shop_id}`, {
+        method: 'DELETE',
+    });
+
+    if (respon.ok) {
+      await get_shops();
+    }}
+}
+
+//Удаляет выбранного сотрудника
+async function delete_employee(event) {
+    const employee_id = event.target.parentElement.parentElement.parentElement.id
+    console.log(employee_id)
+    if (confirm('Вы точно хотите удалить магазин?') === true) {
+        const respon = await fetch(`/delete_employee/${employee_id}`, {
+        method: 'DELETE',
+    });
+
+    if (respon.ok) {
+      await get_employees();
+    }}
+}
+
 get_employees();
 get_shops();
-

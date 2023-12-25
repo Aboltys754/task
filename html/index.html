@@ -11,7 +11,7 @@
         <div class="button_shop">
             <button onclick="click_change_class_shop()">Добавить магазин</button>
             <button onclick="click_change_class_employees()">Добавить сотрудника</button>
-            <button class="hidden" onclick="click_change_class_shop_employees()">Прикрепить сотрудника</button>
+            <button onclick="click_change_class_shop_employees()">Прикрепить сотрудника</button>
         </div>
         <div id="input_shops" class="hidden">
             <div class="number_shop">
@@ -49,35 +49,20 @@
                 <div class="error"></div>
             </div>
             <div id="table_shops_employee">
-                <select id="selected_shop" name="shop" size="1">                        
-                    <option value="мира42" selected="1">мира42</option>
-                    <option value="мира 30" selected="2">мира 30</option>
-                    <option value="дегтярева 70" selected="3">дегтярева 70</option>
-                    <option value="БХ 14" selected="4">БХ 14</option>
-                    <option value="БХ 25" selected="5">БХ 25</option>
-                    <option value="Выбрать магазин" selected="6">Выбрать магазин</option>
+                <select id="selected_shop" name="shop" size="1">
+                    <option value="Выбрать магазин" selected="0">Выбрать магазин</option>
                 </select>      
                 <select id="selected_empolyee" name="empolyee" size="1">
-                    <option value="JS" selected="0">Иванов</option>
-                    <option value="JS" selected="0">Петров</option>
-                    <option value="JS" selected="0">Сидоров</option>
-                    <option value="JS" selected="0">Вертепупкин</option>
-                    <option value="JS" selected="0">Выбрать персонал</option>
+                    <option value="Выбрать персонал" selected="0">Выбрать персонал</option>
                 </select>
-                <button>Отправить данные</button>
+                <button onclick="add_employee_in_shop()">Отправить данные</button>
             </div>
         </div>    
         <div id="table_shops" class="hidden">           
         </div>       
         <div id="table_employees" class="hidden">           
         </div>
-        <div id="table_shop_employees" class="hidden"></div>      
-    </div>
-    <div class="shop_and_employees">
-        <div>
-            <p>Тут будут сотрудники</p>
-        </div>
-        
+        <div id="table_shop_employees" class="hidden"></div>
     </div>
     <script src="./code.js"></script>
 </body>

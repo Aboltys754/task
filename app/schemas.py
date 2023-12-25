@@ -39,3 +39,20 @@ class Employee(BaseEmployee):
 
     class Config:
         from_attributes = True
+
+
+class BaseShopEmployees(BaseModel):
+    id_shop: int
+    id_employee: int
+
+
+class ShopEmployee(BaseShopEmployees):
+    id_shop_employee: int
+
+
+class CreateShopEmployees(BaseShopEmployees):
+    pass
+
+    class Config:
+        from_attributes = True
+
