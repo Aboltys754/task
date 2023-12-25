@@ -9,7 +9,7 @@ services:
         - POSTGRES_USER=bridge
         - POSTGRES_DB=shop_info
   app:
-    image: "aboltys754/task:1.0."
+    image: "aboltys754/task:1.0.1"
     ports:
       - "8000:8000"
     environment:

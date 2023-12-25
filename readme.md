@@ -1,3 +1,9 @@
+Скачиваем образ с гита
+git clone https://github.com/Aboltys754/task.git
+
+
+
+
 docker compose up -d
 
 начальный адрес
