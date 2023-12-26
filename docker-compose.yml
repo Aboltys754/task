@@ -8,6 +8,8 @@ services:
         - POSTGRES_PASSWORD=admin
         - POSTGRES_USER=bridge
         - POSTGRES_DB=shop_info
+      ports:
+        - 5432:5432
   app:
     image: "aboltys754/task:1.0.1"
     ports:

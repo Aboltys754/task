@@ -19,93 +19,93 @@ def get_db():
 
 
 @app.get("/get_shops/", response_model=list[schemas.Shop])
-def get_shops(db: Session = Depends(get_db)):
-    shops = crud.getShops(db)
+async def get_shops(db: Session = Depends(get_db)):
+    shops = await crud.get_shops(db)
     return shops
 
 
 @app.get("/get_employees/", response_model=list[schemas.Employee])
 def get_shops(db: Session = Depends(get_db)):
-    employees = crud.getEmployees(db)
+    employees = crud.get_employees(db)
     return employees
 
 
-@app.get("/get_shops_employees/", response_model=list[schemas.ShopEmployee])
+@app.get("/get_shops_employees/", response_model=list[schemas.ShopEmployees])
 def get_shops_employees(db: Session = Depends(get_db)):
-    shops_employees = crud.getShopsEmployees(db)
+    shops_employees = crud.get_shops_employees(db)
     return shops_employees
 
 
 @app.post("/add_shop/", response_model=schemas.Shop)
-def add_shop(shop: schemas.CreateShop, db: Session = Depends(get_db)):
-    if shop.number_shop == 0:
+def add_shop(shop: schemas.Shop, db: Session = Depends(get_db)):
+    if not shop.number_shop:
         raise HTTPException(status_code=400, detail="The store number cannot be zero or empty")
-    if len(shop.address_shop) < 1:
+    if not shop.address_shop:
         raise HTTPException(status_code=400, detail="The store's address cannot be empty")
-    db_shop = crud.getShop(db, number_shop=shop.number_shop)
+    db_shop = crud.get_shop(db, number_shop=shop.number_shop)
     if db_shop:
         raise HTTPException(status_code=400, detail="There is already such a shop")
-    return crud.createShop(db, shop=shop)
+    return crud.create_shop(db, shop=shop)
 
 
 @app.post("/add_employee/", response_model=schemas.Employee)
-def add_employee(employee: schemas.CreateEmployee, db: Session = Depends(get_db)):
-    if len(employee.name_employee) < 1:
+def add_employee(employee: schemas.Employee, db: Session = Depends(get_db)):
+    if not employee.name_employee:
         raise HTTPException(status_code=400, detail="The name field should not be empty")
-    if len(employee.post_employee) < 1:
+    if not employee.post_employee:
         raise HTTPException(status_code=400, detail="The position field should not be empty")
     if employee.age_employee < 18:
         raise HTTPException(status_code=400, detail="The age of the employee must be over 18 years old")
-    return crud.createEmployee(db, employee=employee)
+    return crud.create_employee(db, employee=employee)
 
 
-@app.post("/add_employee_in_shop/", response_model=schemas.ShopEmployee)
-def add_employee_in_shop(employee_in_shop: schemas.CreateShopEmployees, db: Session = Depends(get_db)):
-    return crud.createShopEmployees(db, shopEmployees=employee_in_shop)
+@app.post("/add_employee_in_shop/", response_model=schemas.Employee)
+def add_employee_in_shop(employee_in_shop: schemas.ShopEmployees, db: Session = Depends(get_db)):
+    return crud.create_shop_employees(db, shopEmployees=employee_in_shop)
 
 
 @app.patch("/update_shop/", response_model=schemas.Shop)
 def update_shop(shop: schemas.Shop, db: Session = Depends(get_db)):
-    if shop.number_shop == 0:
+    if not shop.number_shop:
         raise HTTPException(status_code=400, detail="The store number cannot be zero or empty")
-    if len(shop.address_shop) < 1:
+    if not shop.address_shop:
         raise HTTPException(status_code=400, detail="The store's address cannot be empty")
-    db_shop_id = crud.getShopId(db, id_shop=shop.id_shop)
+    db_shop_id = crud.get_shop_id(db, id_shop=shop.id_shop)
     if db_shop_id is None:
         raise HTTPException(status_code=400, detail="There is no store with this id")
-    crud.updateShop(db, shop=shop)
+    crud.update_shop(db, shop=shop)
     return shop
 
 
 @app.patch("/update_employee/", response_model=schemas.Employee)
 def update_shop(employee: schemas.Employee, db: Session = Depends(get_db)):
-    if len(employee.name_employee) < 1:
+    if not employee.name_employee:
         raise HTTPException(status_code=400, detail="The name field should not be empty")
-    if len(employee.post_employee) < 1:
+    if not employee.post_employee:
         raise HTTPException(status_code=400, detail="The position field should not be empty")
     if employee.age_employee < 18:
         raise HTTPException(status_code=400, detail="The age of the employee must be over 18 years old")
-    db_employee_id = crud.getEmployeeId(db, employee_id=employee.id_employee)
-    crud.updateEmployee(db, employee=employee)
+    crud.get_employee_id(db, employee_id=employee.id_employee)
+    crud.update_employee(db, employee=employee)
     return employee
 
 
 @app.delete("/delete_employee/{employee_id}", response_model=schemas.Employee)
 def delete_shop(employee_id: int, db: Session = Depends(get_db)):
-    db_employee_id = crud.getEmployeeId(db, employee_id=employee_id)
+    db_employee_id = crud.get_employee_id(db, employee_id=employee_id)
     if db_employee_id is None:
         raise HTTPException(status_code=400, detail="No such employee was found")
-    crud.deleteEmployee(db, employee_id=employee_id)
+    crud.delete_employee(db, employee_id=employee_id)
     return db_employee_id
 
 
 @app.delete("/delete_shop/{id_shop}", response_model=schemas.Shop)
 def delete_shop(id_shop: int, db: Session = Depends(get_db)):
-    db_shop_id = crud.getShopId(db, id_shop=id_shop)
+    db_shop_id = crud.get_shop_id(db, id_shop=id_shop)
     print(db_shop_id)
     if db_shop_id is None:
         raise HTTPException(status_code=400, detail="There is no store with this id")
-    crud.deleteShop(db, id_shop=id_shop)
+    crud.delete_shop(db, id_shop=id_shop)
     return db_shop_id
 
 
