@@ -112,6 +112,11 @@ function create_teg_table_employee(employee) {
 }
 
 
+function create_teg_table_shop_employee() {
+
+}
+
+
 //Открывает форму нового магазина и закрывает форму нового сотрудника
 function click_change_class_shop() {
     if (activ_element_update_shop[0] === true) {
@@ -393,6 +398,12 @@ async function get_employee_in_shop() {
     const res = await fetch(`/get_shops_employees/`)
 
     const json = await res.json();
+
+    if (res.ok) {
+        table_shop_employees.textContent = ""
+
+        json.map((eis) => create_teg_table_shop_employee(eis))
+    }
 
     console.log(JSON.stringify(json));
 

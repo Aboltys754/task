@@ -25,5 +25,5 @@ class ShopEmployee(Base):
     __tablename__ = "shop_employees"
 
     id_shop_employee = Column(Integer, primary_key=True, index=True)
-    id_shop = Column(Integer, ForeignKey("shops.id_shop"))
-    id_employee = Column(Integer, ForeignKey("employees.id_employee"))
+    id_shop = Column(Integer, ForeignKey("shops.id_shop", ondelete="CASCADE"))
+    id_employee = Column(Integer, ForeignKey("employees.id_employee", ondelete="CASCADE"))
