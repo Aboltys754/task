@@ -4,18 +4,17 @@ from fastapi.encoders import jsonable_encoder
 from . import models, schemas
 
 
-
-def get_shop(db: Session, number_shop: int) -> models.Shop:
+def get_shop(db: Session, number_shop: int):
     """Получить конкретный магазин"""
     return db.query(models.Shop).filter(models.Shop.number_shop == number_shop).first()
 
 
-async def get_shops(db: Session) -> list[models.Shop]:
+async def get_shops(db: Session):
     """Получить все  магазины"""
     return db.query(models.Shop).all()
 
 
-def get_shop_id(db: Session, id_shop: int) -> models.Shop:
+def get_shop_id(db: Session, id_shop: int):
     """Поиск по id магазина"""
     return db.query(models.Shop).filter(models.Shop.id_shop == id_shop).first()
 
@@ -47,12 +46,12 @@ def update_shop(db: Session, shop: schemas.Shop):
     db.refresh(db_shop)
 
 
-def get_employees(db: Session) -> list[models.Employee]:
+def get_employees(db: Session):
     """Получение данных о всех сотрудниках"""
     return db.query(models.Employee).all()
 
 
-def get_employee_id(db: Session, employee_id) -> models.Employee:
+def get_employee_id(db: Session, employee_id: int):
     """Поиск по id сотрудника"""
     return db.query(models.Employee).filter(models.Employee.id_employee == employee_id).first()
 
@@ -86,9 +85,6 @@ def update_employee(db: Session, employee: schemas.Employee):
     db.refresh(db_employee)
 
 
-
-
-
 def create_shop_employees(db: Session, shop_employees: schemas.ShopEmployees):
     """Создание связи магазина и персонала"""
     db_shop_employees = models.ShopEmployee(id_shop=shop_employees.id_shop,
@@ -98,14 +94,12 @@ def create_shop_employees(db: Session, shop_employees: schemas.ShopEmployees):
     db.refresh(db_shop_employees)
 
 
-def get_shops_employee_id(db: Session, shops_employee: schemas.Employee) -> models.ShopEmployee:
+def get_shops_employee_id(db: Session, shop_employees_id: int):
     """Проверка связи магазина и персонала по id"""
-    return db.query(models.ShopEmployee).filter(models.ShopEmployee.id_shop == shops_employee.id_shop and
-                                            models.ShopEmployee.id_employee == shops_employee.id_employee).first()
+    return db.query(models.ShopEmployee).filter(models.ShopEmployee.id_shop_employee == shop_employees_id).first()
 
 
-
-def get_shops_employees(db: Session) -> list[models.ShopEmployee]:
+def get_shops_employees(db: Session):
     """Получение всех магазинов и сотрудников"""
     return (db.query(models.ShopEmployee.id_shop_employee,
                      models.Shop.number_shop,
@@ -119,20 +113,22 @@ def get_shops_employees(db: Session) -> list[models.ShopEmployee]:
             join(models.Employee, models.Employee.id_employee == models.ShopEmployee.id_employee).all())
 
 
-def update_shop_employees(db: Session, shop_empoloyees: schemas.ShopEmployees):
-    """Обновление данных МАгазина и сотрудника"""
-    db_shop_employees = ((db.query(models.ShopEmployee).
-                         filter(models.ShopEmployee.id_shop_employee == shop_empoloyees.id_shop_employee)).
-                         first())
-    db_shop_employees.id_shop == shop_empoloyees.id_shop
-    db_shop_employees.id_employee == shop_empoloyees.id_employee
+def update_shop_employees(db: Session, shop_employees: schemas.ShopEmployees):
+    """Обновление данных Магазина и сотрудника"""
+    db_shop_employees = (db.query(models.ShopEmployee)
+                         .filter(models.ShopEmployee.id_shop_employee == shop_employees.id_shop_employee)
+                         .first())
+
+    db_shop_employees.id_shop = shop_employees.id_shop
+    db_shop_employees.id_employee = shop_employees.id_employee
     db.commit()
     db.refresh(db_shop_employees)
-
+    return db_shop_employees
 
 
 def delete_shops_employee(db: Session, id_shop_employees: int):
     """Удаление записи о связи сотрудника и магазина"""
-    db_shop_employee = db.query(models.ShopEmployee).filter(models.ShopEmployee.id_shop_employee == id_shop_employees).first()
+    db_shop_employee = db.query(models.ShopEmployee).filter(
+        models.ShopEmployee.id_shop_employee == id_shop_employees).first()
     db.delete(db_shop_employee)
     db.commit()

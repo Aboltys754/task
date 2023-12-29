@@ -37,7 +37,7 @@ def get_shops_employees(db: Session = Depends(get_db)):
 
 
 @app.post("/add_shop/")
-def add_shop(shop: schemas.Shop, db: Session = Depends(get_db)) -> None:
+def add_shop(shop: schemas.Shop, db: Session = Depends(get_db)):
     if not shop.number_shop:
         raise HTTPException(status_code=400, detail="The store number cannot be zero or empty")
     if not shop.address_shop:
@@ -50,7 +50,7 @@ def add_shop(shop: schemas.Shop, db: Session = Depends(get_db)) -> None:
 
 
 @app.post("/add_employee/")
-def add_employee(employee: schemas.Employee, db: Session = Depends(get_db)) -> None:
+def add_employee(employee: schemas.Employee, db: Session = Depends(get_db)):
     if not employee.name_employee:
         raise HTTPException(status_code=400, detail="The name field should not be empty")
     if not employee.post_employee:
@@ -67,7 +67,7 @@ def add_employee_in_shop(employee_in_shop: schemas.ShopEmployees, db: Session = 
 
 
 @app.patch("/update_shop/")
-def update_shop(shop: schemas.Shop, db: Session = Depends(get_db)) -> None:
+def update_shop(shop: schemas.Shop, db: Session = Depends(get_db)):
     if not shop.number_shop:
         raise HTTPException(status_code=400, detail="The store number cannot be zero or empty")
     if not shop.address_shop:
@@ -80,7 +80,7 @@ def update_shop(shop: schemas.Shop, db: Session = Depends(get_db)) -> None:
 
 
 @app.patch("/update_employee/")
-def update_shop(employee: schemas.Employee, db: Session = Depends(get_db)) -> None:
+def update_shop(employee: schemas.Employee, db: Session = Depends(get_db)):
     if not employee.name_employee:
         raise HTTPException(status_code=400, detail="The name field should not be empty")
     if not employee.post_employee:
@@ -95,14 +95,15 @@ def update_shop(employee: schemas.Employee, db: Session = Depends(get_db)) -> No
 
 
 @app.patch("/update_shop_employees")
-def update_shop_employees(shop_employees: schemas.ShopEmployees, db: Session = Depends(get_db)) -> None:
-    db_shop_employees = crud.get_shops_employee_id(db, shops_employee=shop_employees)
-    crud.update_shop_employees(db, shop_empoloyees=shop_employees)
-    return HTTPException(status_code=200, detail="The record has been created")
+def update_shop_employees(shop_employees: schemas.ShopEmployees, db: Session = Depends(get_db)):
+    db_shop_employees = crud.get_shops_employee_id(db, shop_employees_id=shop_employees.id_shop_employee)
+    if db_shop_employees is None:
+        raise HTTPException(status_code=400, detail="No such employee was found")
+    return crud.update_shop_employees(db, shop_employees=shop_employees)
 
 
 @app.delete("/delete_employee/{employee_id}")
-def delete_shop(employee_id: int, db: Session = Depends(get_db)) -> None:
+def delete_shop(employee_id: int, db: Session = Depends(get_db)):
     db_employee = crud.get_employee_id(db, employee_id=employee_id)
     if db_employee is None:
         raise HTTPException(status_code=400, detail="No such employee was found")
@@ -111,7 +112,7 @@ def delete_shop(employee_id: int, db: Session = Depends(get_db)) -> None:
 
 
 @app.delete("/delete_shop/{id_shop}")
-def delete_shop(id_shop: int, db: Session = Depends(get_db)) -> None:
+def delete_shop(id_shop: int, db: Session = Depends(get_db)):
     db_shop = crud.get_shop_id(db, id_shop=id_shop)
     if db_shop is None:
         raise HTTPException(status_code=400, detail="There is no store with this id")
@@ -120,7 +121,7 @@ def delete_shop(id_shop: int, db: Session = Depends(get_db)) -> None:
 
 
 @app.delete("/delete_shop_employees/{shop_employees}")
-def delete_shop(id_shop_employees: int, db: Session = Depends(get_db)) -> None:
+def delete_shop(id_shop_employees: int, db: Session = Depends(get_db)):
     db_shop = crud.get_shops_employee_id(db, id_shop_employees=id_shop_employees)
     if db_shop is None:
         raise HTTPException(status_code=400, detail="There is no store with this id")
